@@ -4,21 +4,22 @@ ini_set('display_errors', 'On');
 $basepath = realpath($_SERVER['DOCUMENT_ROOT']);
 $template_path = $basepath.'/templates/';
 require $basepath.'/inc/template.inc.php';
-require $basepath.'/inc/init.inc.php';
+require $basepath.'/inc/init.vi.inc.php';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
   <meta charset="UTF-8">
-  <title>Home - Biorhythm</title>
+  <title>Trang chủ - Nhịp sinh học</title>
 <?php
 include template('head.home');
 include template('ga');
 ?>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.vi.min.js" integrity="sha256-TnMvef6AxT9fg6mNrTsZCgPDkU4g5EyB+tu66oLAI4U=" crossorigin="anonymous"></script>
   </head>
-  <body class="home" data-href="<?php echo base_url(); ?>/">
+  <body class="home" data-href="<?php echo base_url(); ?>/vi/">
 <?php
-include template('header');
+include template('header.vi');
 ?>
     <main class="main">
       <div class="container-fluid hero px-0">
@@ -26,26 +27,26 @@ include template('header');
           <div class="row mx-auto p-5">
             <div class="hero-box mx-auto w-75 shadow-lg rounded">
               <ul class="nav nav-tabs rounded-top">
-                <li class="active rounded-top"><a class="rounded-top" data-toggle="tab" href="#calculate">Calculate Biorhythm</a></li>
-                <li class="rounded-top"><a data-disable-interaction="true" data-step="2" data-intro="Choose this item to find out your sleep cycles" class="rounded-top" data-toggle="tab" href="#sleep_time">Sleep Rhythm</a></li>
-                <li class="rounded-top"><a href="#compatibility">Compatibility</a></li>
+                <li class="active rounded-top"><a class="rounded-top" data-toggle="tab" href="#calculate">Tính nhịp sinh học</a></li>
+                <li class="rounded-top"><a data-disable-interaction="true" data-step="2" data-intro="Chọn mục này để biết các chu kỳ ngủ của bạn" class="rounded-top" data-toggle="tab" href="#sleep_time">Nhịp sinh học ngủ</a></li>
+                <li class="rounded-top"><a href="#ghep-cap">Ghép cặp</a></li>
               </ul>
               <div class="tab-content p-4">
                 <section id="calculate" class="tab-pane fade in show active">
-                  <form class="form-inline mb-3" id="dob-form" action="/#result">
-                    <label class="sr-only" for="dob">Date of Birth</label>
-                    <input data-toggle="tooltip" data-placement="top" data-original-title="Format: YYYY-MM-DD" data-disable-interaction="true" data-step="1" data-intro="Pick a Date with the order year, month, and day. Click `Run` to start calculating your biorhythms." type="text" pattern="\d{4}-\d{2}-\d{2}" class="form-control mb-2 mr-sm-2 col-12 col-xl-5 col-lg-5 col-md-4 col-sm-12" name="dob" id="dob" placeholder="Date of Birth" required="required" value="<?php echo $dob; ?>" data-date-start-view="decade">
-                    <a data-toggle="tooltip" data-placement="top" data-original-title="Click to start" class="btn btn-warning mb-2 mr-xl-2 mr-lg-2 mr-md-2 col-12 col-xl-2 col-lg-2 col-md-2 col-sm-12" onclick="submitDob()">Run</a>
-                    <a data-toggle="tooltip" data-placement="top" data-original-title="Click to take a tour" class="btn btn-info mb-2 col-12 col-xl-4 col-lg-4 col-md-5 col-sm-12" id="how-to-use">How to use?</a>
+                  <form class="form-inline mb-3" id="dob-form" action="/vi/#ket-qua">
+                    <label class="sr-only" for="dob">Ngày sinh</label>
+                    <input data-toggle="tooltip" data-placement="top" data-original-title="Định dạng: YYYY-MM-DD" data-disable-interaction="true" data-step="1" data-intro="Chọn Ngày sinh theo thứ tự năm, tháng, ngày và ấn `Tính` để tính nhịp sinh học của bạn để tìm hiểu thêm về bản thân" type="text" pattern="\d{4}-\d{2}-\d{2}" class="form-control mb-2 mr-sm-2 col-12 col-xl-5 col-lg-5 col-md-4 col-sm-12" name="dob" id="dob" placeholder="Ngày sinh" required="required" value="<?php echo $dob; ?>" data-date-start-view="decade">
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="Ấn để bắt đầu" class="btn btn-warning mb-2 mr-xl-2 mr-lg-2 mr-md-2 col-12 col-xl-2 col-lg-2 col-md-2 col-sm-12" onclick="submitDob()">Tính</a>
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="Ấn để biết cách dùng" class="btn btn-info mb-2 col-12 col-xl-4 col-lg-4 col-md-5 col-sm-12" id="how-to-use">Dùng làm sao?</a>
                     <button type="submit" class="d-none"></button>
                   </form>
-                  <p class="desc my-0">This is a <b>Biorhythm Calculator</b>. Use this tool to get to know more about yourself. To use, pick a Date using our Date Picker, the date format is <b>YYYY-MM-DD</b> (year-month-day). Then click "Run" to know your <b>physical, emotional, and intellectual</b> values. If you only care about <b>Sleep Rhythm</b>, you can ignore this form.</p>
+                  <p class="desc my-0">Đây là <b>Máy tính Nhịp sinh học</b>. Sử dụng công cụ này để tìm hiểu thêm về bản thân bạn. Chọn Ngày sinh Dương lịch của bạn với định dạng <b>YYYY-MM-DD</b> (năm-tháng-ngày) bằng công cụ Chọn ngày. Sau đó, nhấn nút "Tính" để tính toán chỉ số <b>Sức khỏe, Tình cảm, Trí tuệ</b> của bạn. Nếu bạn chỉ quan tâm đến <b>Nhịp sinh học ngủ</b>, bạn có thể bỏ qua mục này.</p>
                 </section>
                 <section id="sleep_time" class="tab-pane fade">
-                  <p>If you plan to get up at</p>
+                  <p>Nếu bạn dự định thức dậy lúc</p>
                   <div class="row p-3">
                     <select id="sleep_time_hour" class="custom-select col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <option>Select hour</option>
+                      <option>Chọn giờ</option>
                       <option>0</option>
                       <option>1</option>
                       <option>2</option>
@@ -73,7 +74,7 @@ include template('header');
                       <option>24</option>
                     </select>
                     <select id="sleep_time_minute" class="custom-select col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                      <option>Select minute</option>
+                      <option>Chọn phút</option>
                       <option>00</option>
                       <option>05</option>
                       <option>10</option>
@@ -89,17 +90,17 @@ include template('header');
                     </select>
                   </div>
                   <div>
-                    <p>You should try to fall asleep at one of the following times:</p>
+                    <p>Bạn nên đi ngủ vào một trong những giờ sau:</p>
                     <span id="sleep_time_results">
                       <ul>
                         <li>N/A</li>
                       </ul>
                     </span>
                   </div>
-                  <p>Or if you want to sleep right now</p>
-                  <a class="btn btn-warning mb-2" id="sleep_now">Sleep now!</a>
+                  <p>Hoặc nếu bạn muốn ngủ ngay bây giờ</p>
+                  <a class="btn btn-warning mb-2" id="sleep_now">Ngủ ngay bây giờ!</a>
                   <div>
-                    <p>You should try to get up at one of the following times:</p>
+                    <p>Bạn nên thức dậy vào một trong những giờ sau:</p>
                     <span id="wake_up_time_results">
                       <ul>
                         <li>N/A</li>
@@ -229,6 +230,7 @@ include template('header');
               immediateUpdates: true,
               todayHighlight: true,
               todayBtn: true,
+              language: 'vi',
               orientation: 'bottom'
             }).attr('readonly','readonly');
             $('.nav-tabs li a').each(function(){
@@ -242,7 +244,7 @@ include template('header');
               })
             });
             $('#how-to-use').on('click', function(){
-              introJs().setOptions({"nextLabel": "Next", "prevLabel": "Back", "skipLabel": "Skip", "doneLabel": "Done", "showProgress": true, "showButtons": true, "showBullets": true, "exitOnOverlayClick": false, "hidePrev": true, "hideNext": true, "disableInteraction": true}).start();
+              introJs().setOptions({"nextLabel": "Tiếp theo", "prevLabel": "Trước đó", "skipLabel": "Bỏ qua", "doneLabel": "Hoàn tất", "showProgress": true, "showButtons": true, "showBullets": true, "exitOnOverlayClick": false, "hidePrev": true, "hideNext": true, "disableInteraction": true}).start();
             });
             $(function () {
               if (!Modernizr.touch) {
@@ -273,7 +275,7 @@ render_proverb($lang_code);
           </div>
         </div>
       </div>
-      <div id="result"></div>
+      <div id="ket-qua"></div>
       <div class="container-fluid chart px-0">
         <div class="container mx-auto px-0">
           <div class="row w-100 mx-auto p-5 position-relative" id="ajax-chart">
@@ -292,36 +294,36 @@ echo $chart->output_info();
           </div>
         </div>
       </div>
-      <div id="compatibility"></div>
+      <div id="ghep-cap"></div>
       <div class="container-fluid compat px-0 border-top">
         <div class="container mx-auto px-0">
           <div class="row w-100 mx-auto py-5 px-0">
             <div class="px-5 w-100">
-              <h2 class="mb-4">Compatibility with your friends</h2>
-              <section class="rhythms" data-disable-interaction="true" data-step="9" data-intro="How compatible are you and your friends? Choose the Date of birth for you two.">
-                <article class="rhythm physical" title="Physical: 100%">
-                  <h3>Physical</h3>
+              <h2 class="mb-4">Ghép cặp dựa theo nhịp sinh học</h2>
+              <section class="rhythms" data-disable-interaction="true" data-step="9" data-intro="Bạn và đối tác (bạn bè, người yêu, vợ chồng) hợp nhau đến mức nào? Chọn Ngày sinh cho hai người.">
+                <article class="rhythm physical" title="Sức khỏe: 100%">
+                  <h3>Sức khỏe</h3>
                   <div class="percent">100%</div>
                   <div class="percentage">
                     <div class="percentage-bar"></div>
                   </div>
                 </article>
-                <article class="rhythm emotional" title="Emotional: 100%">
-                  <h3>Emotional</h3>
+                <article class="rhythm emotional" title="Tình cảm: 100%">
+                  <h3>Tình cảm</h3>
                   <div class="percent">100%</div>
                   <div class="percentage">
                     <div class="percentage-bar"></div>
                   </div>
                 </article>
-                <article class="rhythm intellectual" title="Intellectual: 100%">
-                  <h3>Intellectual</h3>
+                <article class="rhythm intellectual" title="Trí tuệ: 100%">
+                  <h3>Trí tuệ</h3>
                   <div class="percent">100%</div>
                   <div class="percentage">
                     <div class="percentage-bar"></div>
                   </div>
                 </article>
-                <article class="rhythm average" title="Average: 100%">
-                  <h3>Average</h3>
+                <article class="rhythm average" title="Trung bình: 100%">
+                  <h3>Trung bình</h3>
                   <div class="percent">100%</div>
                   <div class="percentage">
                     <div class="percentage-bar"></div>
@@ -330,20 +332,20 @@ echo $chart->output_info();
               </section>
             </div>
             <form class="dates mx-auto" id="date-input">
-              <div class="date" data-disable-interaction="true" data-step="10" data-intro="Choose your birthday">
-                <select name="yyyy" data-original-title="Year" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Year</option></select>
+              <div class="date" data-disable-interaction="true" data-step="10" data-intro="Chọn ngày sinh của bạn">
+                <select name="yyyy" data-original-title="Năm" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Năm</option></select>
                 -
-                <select name="mm" data-original-title="Month" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Month</option></select>
+                <select name="mm" data-original-title="Tháng" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Tháng</option></select>
                 -
-                <select name="dd" data-original-title="Day" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Day</option></select>
+                <select name="dd" data-original-title="Ngày" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Ngày</option></select>
               </div>
               <span class="separator">+</span>
-              <div class="date" data-disable-interaction="true" data-step="11" data-intro="Choose your friend's birthday">
-                <select name="yyyy2" data-original-title="Year" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Year</option></select>
+              <div class="date" data-disable-interaction="true" data-step="11" data-intro="Chọn ngày sinh của đối tác">
+                <select name="yyyy2" data-original-title="Năm" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Năm</option></select>
                 -
-                <select name="mm2" data-original-title="Month" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Month</option></select>
+                <select name="mm2" data-original-title="Tháng" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Tháng</option></select>
                 -
-                <select name="dd2" data-original-title="Day" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Day</option></select>
+                <select name="dd2" data-original-title="Ngày" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Ngày</option></select>
               </div>
             </form>
             <script type="text/javascript">
@@ -377,7 +379,7 @@ include template('adsense');
 ?>
     </main>
 <?php
-include template('footer');
+include template('footer.vi');
 ?>
     <script>
     manipulateHome();
