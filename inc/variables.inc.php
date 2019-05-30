@@ -30,9 +30,9 @@ $credential_id = 3; //change this to 4 in DEMO
 //$cdn_url = "https://cdn_local.nhipsinhhoc.vn";
 //$cdn_url = "https://cdn.biorhythm.xyz";
 //$cdn_url = "https://static-bio.vncdn.vn";
-//$cdn_url = "";
+$cdn_url = "";
 //$cdn_url = "https://filecuatui.com";
-$cdn_url = "https://taptincuatui.com";
+//$cdn_url = "https://taptincuatui.com";
 //$cdn_url = 'https://biorhythm.cdn.vccloud.vn';
 $number = calculate_life_path($dob);
 if (isset($_GET['dob']) && isset($_GET['diff']) && isset($_GET['is_secondary']) && isset($_GET['dt_change']) && isset($_GET['partner_dob']) && isset($_GET['lang_code'])) {
