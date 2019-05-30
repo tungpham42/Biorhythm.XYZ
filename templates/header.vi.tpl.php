@@ -18,7 +18,7 @@
             <a class="contact" href="/vi/lien-he/">Liên hệ</a>
           </li>
           <li class="pt-4">
-            <a target="_blank" href="/blog/">Blog</a>
+            <a target="_blank" href="https://biorhythm.xyz/blog/">Blog</a>
           </li>
 <?php
 include 'lang.php';
