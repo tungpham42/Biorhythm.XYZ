@@ -1,0 +1,14 @@
+footer {
+  background-color: #181818;
+  color: white;
+  z-index: 123456789;
+  a {
+    color: #d2d2d2;
+    &:hover {
+      color: white;
+    }
+  }
+}
+body.home footer a.home, body.about footer a.about, body.bmi footer a.bmi, body.contact footer a.contact {
+  text-decoration: underline;
+}
