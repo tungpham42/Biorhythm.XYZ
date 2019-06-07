@@ -1,6 +1,6 @@
 <?php
 class Chart {
-	protected $_dob, $_diff, $_date, $_is_secondary, $_dt_change, $_lang_code, $_partner_dob, $_rhythms_count,  $_dates_count, $_today_index, $_title_text, $_explanation_title_text, $_percentage_text, $_average_text, $_full_screen_text, $_download_jpeg_text, $_download_pdf_text, $_download_png_text, $_download_svg_text, $_print_chart_text, $_reset_zoom_text, $_date_text, $_life_path_text, $_age, $_news_h5, $_info_h5, $_statistics_h5, $_compatibility_h5, $_lunar_h5, $_controls_h5, $_dates_json, $_rhythms_json, $_fullname, $_intro_info, $_intro_chart, $_chart_today, $_chart_birthday, $_chart_prev, $_chart_next;
+	protected $_dob, $_diff, $_date, $_is_secondary, $_dt_change, $_lang_code, $_partner_dob, $_rhythms_count,  $_dates_count, $_today_index, $_title_text, $_explanation_title_text, $_percentage_text, $_average_text, $_full_screen_text, $_download_jpeg_text, $_download_pdf_text, $_download_png_text, $_download_svg_text, $_print_chart_text, $_reset_zoom_text, $_date_text, $_life_path_text, $_age, $_news_h5, $_info_h5, $_statistics_h5, $_compatibility_h5, $_lunar_h5, $_controls_h5, $_dates_json, $_rhythms_json, $_fullname, $_intro_info, $_intro_chart, $_chart_today, $_chart_birthday, $_chart_prev, $_chart_next, $_chart_prev_week, $_chart_next_week;
 	protected $_rhythms = array();
 	protected $_days = array();
 	protected $_dates = array();
@@ -55,6 +55,8 @@ class Chart {
 				$this->_chart_birthday = 'Đi đến ngày sinh nhật';
 				$this->_chart_prev = 'Đi đến ngày trước đó';
 				$this->_chart_next = 'Đi đến ngày kế tiếp';
+        $this->_chart_prev_week = 'Đi đến tuần trước đó';
+        $this->_chart_next_week = 'Đi đến tuần kế tiếp';
 				$this->_title_text = 'Ngày sinh: ';
 				$this->_intro_chart = 'Biểu đồ này được tạo ra từ Ngày sinh bạn đã nhập. Khám phá từng ngày bằng cách bấm vào ngày muốn xem.';
 				$this->_intro_info = 'Ngày này bạn như thế nào? Tìm hiểu nào';
@@ -93,6 +95,8 @@ class Chart {
 				$this->_chart_birthday = 'Go to the next birthday';
 				$this->_chart_prev = 'Go to the previous day';
 				$this->_chart_next = 'Go to the next day';
+        $this->_chart_prev_week = 'Go to the previous week';
+        $this->_chart_next_week = 'Go to the next week';
 				$this->_title_text = 'Date of birth: ';
 				$this->_intro_chart = 'This chart is created based on your Date of Birth. Discover the days by clicking on the day you want to see.';
 				$this->_intro_info = 'How are you on this day? Find out here';
@@ -312,7 +316,7 @@ class Chart {
 		global $help_interfaces;
 		$output = "";
 		$output .= '
-<section id="info" data-disable-interaction="true" data-step="8" data-intro="'.$this->_intro_info.'">
+<section id="info" data-disable-interaction="true" data-step="10" data-intro="'.$this->_intro_info.'">
 	<h2 class="mb-4">'.$this->_info_h5.'</h2>
 	<div class="helper changeable"><i class="icon-circle-question-mark icon-white"></i></div>
 	'.$this->get_infor_details().'
@@ -326,10 +330,12 @@ class Chart {
 		global $help_interfaces;
 		$output = "";
 		$output .= '
-<i id="chart-prev" onclick="goToPrevMain()" data-disable-interaction="true" data-step="5" data-intro="'.$this->_chart_prev.'" data-original-title="'.$this->_chart_prev.'" data-toggle="tooltip" data-placement="right" class="chart-nav position-absolute fas fa-angle-left" style="left: 6px;"></i>
-<i id="chart-next" onclick="goToNextMain()" data-disable-interaction="true" data-step="6" data-intro="'.$this->_chart_next.'" data-original-title="'.$this->_chart_next.'" data-toggle="tooltip" data-placement="left" class="chart-nav position-absolute fas fa-angle-right" style="right: 6px;"></i>
+<i id="chart-prev" onclick="goToPrevMain()" data-disable-interaction="true" data-step="5" data-intro="'.$this->_chart_prev.'" data-original-title="'.$this->_chart_prev.'" data-toggle="tooltip" data-placement="right" class="chart-nav position-absolute fas fa-angle-left" style="left: 24px;"></i>
+<i id="chart-next" onclick="goToNextMain()" data-disable-interaction="true" data-step="6" data-intro="'.$this->_chart_next.'" data-original-title="'.$this->_chart_next.'" data-toggle="tooltip" data-placement="left" class="chart-nav position-absolute fas fa-angle-right" style="right: 24px;"></i>
+<i id="chart-prev-week" onclick="goToPrevWeekMain()" data-disable-interaction="true" data-step="7" data-intro="'.$this->_chart_prev_week.'" data-original-title="'.$this->_chart_prev_week.'" data-toggle="tooltip" data-placement="right" class="chart-nav position-absolute fas fa-angle-left" style="left: 0;"></i>
+<i id="chart-next-week" onclick="goToNextWeekMain()" data-disable-interaction="true" data-step="8" data-intro="'.$this->_chart_next_week.'" data-original-title="'.$this->_chart_next_week.'" data-toggle="tooltip" data-placement="left" class="chart-nav position-absolute fas fa-angle-right" style="right: 0;"></i>
 <i id="chart-today" onclick="goToTodayMain()" data-disable-interaction="true" data-step="4" data-intro="'.$this->_chart_today.'" data-original-title="'.$this->_chart_today.'" data-toggle="tooltip" data-placement="bottom" class="chart-nav position-absolute fas fa-calendar-day" style="bottom: auto; top: 12px; left: calc(50% - 21px);"></i>
-<i id="chart-birthday" onclick="goToBirthdayMain()" data-disable-interaction="true" data-step="7" data-intro="'.$this->_chart_birthday.'" data-original-title="'.$this->_chart_birthday.'" data-toggle="tooltip" data-placement="top" class="chart-nav position-absolute fas fa-birthday-cake" style="bottom: 12px; top: auto; left: calc(50% - 21px);"></i>
+<i id="chart-birthday" onclick="goToBirthdayMain()" data-disable-interaction="true" data-step="9" data-intro="'.$this->_chart_birthday.'" data-original-title="'.$this->_chart_birthday.'" data-toggle="tooltip" data-placement="top" class="chart-nav position-absolute fas fa-birthday-cake" style="bottom: 12px; top: auto; left: calc(50% - 21px);"></i>
 <div id="main_chart" class="w-100 shadow-lg rounded" data-disable-interaction="true" data-step="3" data-intro="'.$this->_intro_chart.'"></div>
 <script>
 lang = $("html").attr("lang");
@@ -344,6 +350,14 @@ function goToPrevMain() {
 function goToNextMain() {
 	loadResults("'.$this->_dob.'","'.($this->_diff+1).'","'.$this->_is_secondary.'","'.date('Y-m-d',time()+86400*($this->_diff+1)).'","'.$this->_partner_dob.'",lang);
 	$("[data-toggle=tooltip]").tooltip("hide");
+}
+function goToPrevWeekMain() {
+  loadResults("'.$this->_dob.'","'.($this->_diff-7).'","'.$this->_is_secondary.'","'.date('Y-m-d',time()+86400*($this->_diff-7)).'","'.$this->_partner_dob.'",lang);
+  $("[data-toggle=tooltip]").tooltip("hide");
+}
+function goToNextWeekMain() {
+  loadResults("'.$this->_dob.'","'.($this->_diff+7).'","'.$this->_is_secondary.'","'.date('Y-m-d',time()+86400*($this->_diff+7)).'","'.$this->_partner_dob.'",lang);
+  $("[data-toggle=tooltip]").tooltip("hide");
 }
 function goToBirthdayMain() {
 	loadResults("'.$this->_dob.'","'.($this->_diff+countdown_birthday($this->_dob, $this->_date)).'","'.$this->_is_secondary.'","'.date('Y-m-d',time()+86400*($this->_diff+countdown_birthday($this->_dob, $this->_date))).'","'.$this->_partner_dob.'",lang);

@@ -1023,7 +1023,7 @@ function generate_proverb(string $lang): array {
 }
 function render_proverb(string $lang): void {
 	$proverb = generate_proverb($lang);
-	echo '<blockquote id="proverb_content"><div id="proverb_text"><span class="content" data-toggle="tooltip" data-placement="bottom" title="Ấn để sao chép" data-disable-interaction="true" data-step="12" data-intro="Đây là một câu thành ngữ ngẫu nhiên cho bạn. Đọc và thư giãn nhé.">'.$proverb['content'].'</span></div></blockquote ><span class="arrow_down"></span><p id="proverb_author" class="float-right">'.$proverb['author'].'</p>';
+	echo '<blockquote id="proverb_content"><div id="proverb_text"><span class="content" data-toggle="tooltip" data-placement="bottom" title="Ấn để sao chép" data-disable-interaction="true" data-step="14" data-intro="Đây là một câu thành ngữ ngẫu nhiên cho bạn. Đọc và thư giãn nhé.">'.$proverb['content'].'</span></div></blockquote ><span class="arrow_down"></span><p id="proverb_author" class="float-right">'.$proverb['author'].'</p>';
 }
 function render_proverb_json(string $lang): void {
 	$proverb = generate_proverb($lang);

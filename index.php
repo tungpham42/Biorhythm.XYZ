@@ -298,7 +298,7 @@ echo $chart->output_info();
           <div class="row w-100 mx-auto py-5 px-0">
             <div class="px-5 w-100">
               <h2 class="mb-4">Compatibility with your friends</h2>
-              <section class="rhythms" data-disable-interaction="true" data-step="9" data-intro="How compatible are you and your friends? Choose the Date of birth for you two.">
+              <section class="rhythms" data-disable-interaction="true" data-step="11" data-intro="How compatible are you and your friends? Choose the Date of birth for you two.">
                 <article class="rhythm physical" title="Physical: 100%">
                   <h3>Physical</h3>
                   <div class="percent">100%</div>
@@ -330,7 +330,7 @@ echo $chart->output_info();
               </section>
             </div>
             <form class="dates mx-auto" id="date-input">
-              <div class="date" data-disable-interaction="true" data-step="10" data-intro="Choose your birthday">
+              <div class="date" data-disable-interaction="true" data-step="12" data-intro="Choose your birthday">
                 <select name="yyyy" data-original-title="Year" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Year</option></select>
                 -
                 <select name="mm" data-original-title="Month" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Month</option></select>
@@ -338,7 +338,7 @@ echo $chart->output_info();
                 <select name="dd" data-original-title="Day" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Day</option></select>
               </div>
               <span class="separator">+</span>
-              <div class="date" data-disable-interaction="true" data-step="11" data-intro="Choose your friend's birthday">
+              <div class="date" data-disable-interaction="true" data-step="13" data-intro="Choose your friend's birthday">
                 <select name="yyyy2" data-original-title="Year" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Year</option></select>
                 -
                 <select name="mm2" data-original-title="Month" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Month</option></select>

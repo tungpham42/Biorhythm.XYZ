@@ -31,18 +31,18 @@ include template('header.vi');
                 <div class="input-group-prepend col-4 col-xl-3 col-lg-3 col-md-4 col-sm-4 px-0">
                   <span class="input-group-text w-100">Cân nặng</span>
                 </div>
-                <input class="form-control col-5 col-xl-8 col-lg-8 col-md-6 col-sm-6" pattern="\d*" id="weight" type="number" min="25" max="300" step="1" placeholder="84" data-ng-model="weight" required="required" >
-                <div class="input-group-append col-3 col-xl-1 col-lg-1 col-md-2 col-sm-2 px-0">
-                  <span class="input-group-text w-100">KG</span>
+                <input class="form-control col-4 col-xl-6 col-lg-6 col-md-5 col-sm-5" pattern="\d*" id="weight" type="number" min="25" max="300" step="1" placeholder="84" data-ng-model="weight" required="required" >
+                <div class="input-group-append col-4 col-xl-3 col-lg-3 col-md-3 col-sm-3 px-0">
+                  <span class="input-group-text w-100">Ký-lô-gram</span>
                 </div>
               </div>
               <div class="input-group">
                 <div class="input-group-prepend col-4 col-xl-3 col-lg-3 col-md-4 col-sm-4 px-0">
                   <span class="input-group-text w-100">Chiều cao</span>
                 </div>
-                <input class="form-control col-5 col-xl-8 col-lg-8 col-md-6 col-sm-6" pattern="\d*" id="height" type="number" min="100" max="300" step="1" placeholder="184" data-ng-model="height" required="required" >
-                <div class="input-group-append col-3 col-xl-1 col-lg-1 col-md-2 col-sm-2 px-0">
-                  <span class="input-group-text w-100">CM</span>
+                <input class="form-control col-4 col-xl-6 col-lg-6 col-md-5 col-sm-5" pattern="\d*" id="height" type="number" min="100" max="300" step="1" placeholder="184" data-ng-model="height" required="required" >
+                <div class="input-group-append col-4 col-xl-3 col-lg-3 col-md-3 col-sm-3 px-0">
+                  <span class="input-group-text w-100">Cen-ti-mét</span>
                 </div>
               </div>
               <div class="input-group">

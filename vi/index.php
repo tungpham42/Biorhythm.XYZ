@@ -300,7 +300,7 @@ echo $chart->output_info();
           <div class="row w-100 mx-auto py-5 px-0">
             <div class="px-5 w-100">
               <h2 class="mb-4">Ghép cặp dựa theo nhịp sinh học</h2>
-              <section class="rhythms" data-disable-interaction="true" data-step="9" data-intro="Bạn và đối tác (bạn bè, người yêu, vợ chồng) hợp nhau đến mức nào? Chọn Ngày sinh cho hai người.">
+              <section class="rhythms" data-disable-interaction="true" data-step="11" data-intro="Bạn và đối tác (bạn bè, người yêu, vợ chồng) hợp nhau đến mức nào? Chọn Ngày sinh cho hai người.">
                 <article class="rhythm physical" title="Sức khỏe: 100%">
                   <h3>Sức khỏe</h3>
                   <div class="percent">100%</div>
@@ -332,7 +332,7 @@ echo $chart->output_info();
               </section>
             </div>
             <form class="dates mx-auto" id="date-input">
-              <div class="date" data-disable-interaction="true" data-step="10" data-intro="Chọn ngày sinh của bạn">
+              <div class="date" data-disable-interaction="true" data-step="12" data-intro="Chọn ngày sinh của bạn">
                 <select name="yyyy" data-original-title="Năm" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Năm</option></select>
                 -
                 <select name="mm" data-original-title="Tháng" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Tháng</option></select>
@@ -340,7 +340,7 @@ echo $chart->output_info();
                 <select name="dd" data-original-title="Ngày" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Ngày</option></select>
               </div>
               <span class="separator">+</span>
-              <div class="date" data-disable-interaction="true" data-step="11" data-intro="Chọn ngày sinh của đối tác">
+              <div class="date" data-disable-interaction="true" data-step="13" data-intro="Chọn ngày sinh của đối tác">
                 <select name="yyyy2" data-original-title="Năm" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Năm</option></select>
                 -
                 <select name="mm2" data-original-title="Tháng" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Tháng</option></select>
