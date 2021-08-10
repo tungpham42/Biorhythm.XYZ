@@ -230,8 +230,8 @@ function manipulateProverb() {
     $('#proverb').on('click', '#proverb_text', function() {
         copyToClipboard('#proverb_text');
         selectText('#proverb_text')
-    }).on('click', 'i#proverb_refresh', function() {
-        loadProverb($('body').attr('lang'))
+    }).on('click', '#proverb_refresh', function() {
+        loadProverb($('html').attr('lang'))
     });
 }
 

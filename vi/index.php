@@ -1,6 +1,11 @@
 <?php
 error_reporting(-1);
 ini_set('display_errors', 'On');
+header("Expires: Mon, 29 Jan 1990 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 $basepath = realpath($_SERVER['DOCUMENT_ROOT']);
 $template_path = $basepath.'/templates/';
 require $basepath.'/inc/template.inc.php';
@@ -10,7 +15,7 @@ require $basepath.'/inc/init.vi.inc.php';
 <html lang="vi">
   <head>
   <meta charset="UTF-8">
-  <title>Trang chủ - Nhịp sinh học</title>
+  <title>Trang nhất - Nhịp sinh học</title>
 <?php
 include template('head.home');
 include template('ga');
@@ -24,7 +29,7 @@ include template('header.vi');
     <main class="main">
       <div class="container-fluid hero px-0">
         <div class="container">
-          <div class="row mx-auto p-5">
+          <div class="row mx-auto py-5 px-3">
             <div class="hero-box mx-auto w-75 shadow-lg rounded">
               <ul class="nav nav-tabs rounded-top">
                 <li class="active rounded-top"><a class="rounded-top" data-toggle="tab" href="#calculate">Tính nhịp sinh học</a></li>
@@ -37,7 +42,7 @@ include template('header.vi');
                     <label class="sr-only" for="dob">Ngày sinh</label>
                     <input data-toggle="tooltip" data-placement="top" data-original-title="Định dạng: YYYY-MM-DD" data-disable-interaction="true" data-step="1" data-intro="Chọn Ngày sinh theo thứ tự năm, tháng, ngày và ấn `Tính` để tính nhịp sinh học của bạn để tìm hiểu thêm về bản thân" type="text" pattern="\d{4}-\d{2}-\d{2}" class="form-control mb-2 mr-sm-2 col-12 col-xl-5 col-lg-5 col-md-4 col-sm-12" name="dob" id="dob" placeholder="Ngày sinh" required="required" value="<?php echo $dob; ?>" data-date-start-view="decade">
                     <a data-toggle="tooltip" data-placement="top" data-original-title="Ấn để bắt đầu" class="btn btn-warning mb-2 mr-xl-2 mr-lg-2 mr-md-2 col-12 col-xl-2 col-lg-2 col-md-2 col-sm-12" onclick="submitDob()">Tính</a>
-                    <a data-toggle="tooltip" data-placement="top" data-original-title="Ấn để biết cách dùng" class="btn btn-info mb-2 col-12 col-xl-4 col-lg-4 col-md-5 col-sm-12" id="how-to-use">Dùng làm sao?</a>
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="Ấn để biết cách dùng" class="btn btn-info mb-2 col-12 col-xl-4 col-lg-4 col-md-5 col-sm-12" id="how-to-use">Cách sử dụng</a>
                     <button type="submit" class="d-none"></button>
                   </form>
                   <p class="desc my-0">Đây là <b>Máy tính Nhịp sinh học</b>. Sử dụng công cụ này để tìm hiểu thêm về bản thân bạn. Chọn Ngày sinh Dương lịch của bạn với định dạng <b>YYYY-MM-DD</b> (năm-tháng-ngày) bằng công cụ Chọn ngày. Sau đó, nhấn nút "Tính" để tính toán chỉ số <b>Sức khỏe, Tình cảm, Trí tuệ</b> của bạn. Nếu bạn chỉ quan tâm đến <b>Nhịp sinh học ngủ</b>, bạn có thể bỏ qua mục này.</p>
@@ -45,7 +50,7 @@ include template('header.vi');
                 <section id="sleep_time" class="tab-pane fade">
                   <p>Nếu bạn dự định thức dậy lúc</p>
                   <div class="row p-3">
-                    <select id="sleep_time_hour" class="custom-select col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <select id="sleep_time_hour" class="custom-select col-12 col-xl-5 col-lg-5 col-md-5 col-sm-12 mb-2 mr-xl-2 mr-lg-2 mr-md-2">
                       <option>Chọn giờ</option>
                       <option>0</option>
                       <option>1</option>
@@ -73,7 +78,7 @@ include template('header.vi');
                       <option>23</option>
                       <option>24</option>
                     </select>
-                    <select id="sleep_time_minute" class="custom-select col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <select id="sleep_time_minute" class="custom-select col-12 col-xl-5 col-lg-5 col-md-5 col-sm-12 mb-2 ml-xl-2 ml-lg-2 ml-md-2">
                       <option>Chọn phút</option>
                       <option>00</option>
                       <option>05</option>
@@ -98,7 +103,7 @@ include template('header.vi');
                     </span>
                   </div>
                   <p>Hoặc nếu bạn muốn ngủ ngay bây giờ</p>
-                  <a class="btn btn-warning mb-2" id="sleep_now">Ngủ ngay bây giờ!</a>
+                  <a class="btn btn-warning mb-2" id="sleep_now"><i class="fas fa-bed"></i> Ngủ ngay bây giờ</a>
                   <div>
                     <p>Bạn nên thức dậy vào một trong những giờ sau:</p>
                     <span id="wake_up_time_results">
@@ -110,7 +115,12 @@ include template('header.vi');
                 </section>
               </div>
             </div>
-            <script type="text/javascript">
+<?php
+include template('script.home');
+?>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js" integrity="sha256-TnMvef6AxT9fg6mNrTsZCgPDkU4g5EyB+tu66oLAI4U=" crossorigin="anonymous"></script>
+            <script src="<?php echo $cdn_url; ?>/static/js/gotv.js?v=1"></script>
+            <script>
             function isDate(txtDate) {
               var currVal = txtDate;
               if (currVal === '') {
@@ -226,7 +236,6 @@ include template('header.vi');
               defaultViewDate: '<?php echo ($dob != '') ? date('Y-m-d',strtotime($dob)): '1961-09-26'; ?>',
               endDate: '<?php echo date('Y-m-d'); ?>',
               autoclose: true,
-              clearBtn: true,
               immediateUpdates: true,
               todayHighlight: true,
               todayBtn: true,
@@ -278,7 +287,7 @@ render_proverb($lang_code);
       <div id="ket-qua"></div>
       <div class="container-fluid chart px-0">
         <div class="container mx-auto px-0">
-          <div class="row w-100 mx-auto p-5 position-relative" id="ajax-chart">
+          <div class="row w-100 mx-auto py-5 px-0 position-relative" id="ajax-chart">
 <?php
 echo $chart->output_main_chart();
 ?>
@@ -300,7 +309,7 @@ echo $chart->output_info();
           <div class="row w-100 mx-auto py-5 px-0">
             <div class="px-5 w-100">
               <h2 class="mb-4">Ghép cặp dựa theo nhịp sinh học</h2>
-              <section class="rhythms" data-disable-interaction="true" data-step="11" data-intro="Bạn và đối tác (bạn bè, người yêu, vợ chồng) hợp nhau đến mức nào? Chọn Ngày sinh cho hai người.">
+              <section class="rhythms" data-disable-interaction="true" data-step="12" data-intro="Bạn và đối tác (bạn bè, người yêu, vợ chồng) hợp nhau đến mức nào? Chọn Ngày sinh cho hai người.">
                 <article class="rhythm physical" title="Sức khỏe: 100%">
                   <h3>Sức khỏe</h3>
                   <div class="percent">100%</div>
@@ -332,23 +341,23 @@ echo $chart->output_info();
               </section>
             </div>
             <form class="dates mx-auto" id="date-input">
-              <div class="date" data-disable-interaction="true" data-step="12" data-intro="Chọn ngày sinh của bạn">
-                <select name="yyyy" data-original-title="Năm" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Năm</option></select>
+              <div class="date shadow-lg rounded" data-disable-interaction="true" data-step="13" data-intro="Chọn ngày sinh của bạn">
+                <select name="yyyy" data-original-title="Năm" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Năm</option></select>
                 -
-                <select name="mm" data-original-title="Tháng" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Tháng</option></select>
+                <select name="mm" data-original-title="Tháng" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Tháng</option></select>
                 -
-                <select name="dd" data-original-title="Ngày" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Ngày</option></select>
+                <select name="dd" data-original-title="Ngày" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Ngày</option></select>
               </div>
               <span class="separator">+</span>
-              <div class="date" data-disable-interaction="true" data-step="13" data-intro="Chọn ngày sinh của đối tác">
-                <select name="yyyy2" data-original-title="Năm" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Năm</option></select>
+              <div class="date shadow-lg rounded" data-disable-interaction="true" data-step="14" data-intro="Chọn ngày sinh của đối tác">
+                <select name="yyyy2" data-original-title="Năm" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Năm</option></select>
                 -
-                <select name="mm2" data-original-title="Tháng" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Tháng</option></select>
+                <select name="mm2" data-original-title="Tháng" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Tháng</option></select>
                 -
-                <select name="dd2" data-original-title="Ngày" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Ngày</option></select>
+                <select name="dd2" data-original-title="Ngày" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Ngày</option></select>
               </div>
             </form>
-            <script type="text/javascript">
+            <script>
             function daysInMonth(month, year) {
               return new Date(year, month, 0).getDate();
             }
@@ -367,10 +376,20 @@ echo $chart->output_info();
             }
             </script>
             <script src="<?php echo $cdn_url; ?>/static/js/compat.js?v=7"></script>
-            <script type="text/javascript">
+            <script>
             updateDays('select[name="yyyy"]','select[name="mm"]','select[name="dd"]');
             updateDays('select[name="yyyy2"]','select[name="mm2"]','select[name="dd2"]');
             </script>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid comments px-0 border-top">
+        <div class="container mx-auto px-0">
+          <div class="row w-100 mx-auto p-5">
+            <h2 class="mb-4 w-100" data-disable-interaction="true" data-step="16" data-intro="Màn giới thiệu kết thúc tại đây. Hãy để lại bình luận">Phần bình luận</h2>
+<?php
+include template('fb_comments.vi');
+?>
           </div>
         </div>
       </div>
@@ -380,6 +399,7 @@ include template('adsense');
     </main>
 <?php
 include template('footer.vi');
+include template('service_worker');
 ?>
     <script>
     manipulateHome();

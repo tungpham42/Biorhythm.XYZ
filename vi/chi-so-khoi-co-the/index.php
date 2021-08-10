@@ -5,9 +5,10 @@ $basepath = realpath($_SERVER['DOCUMENT_ROOT']);
 $template_path = $basepath.'/templates/';
 require $basepath.'/inc/template.inc.php';
 require $basepath.'/inc/init.vi.inc.php';
+$sub = 'bmi';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
   <meta charset="UTF-8">
   <title>Chỉ số khối cơ thể - Nhịp sinh học</title>
@@ -33,7 +34,7 @@ include template('header.vi');
                 </div>
                 <input class="form-control col-4 col-xl-6 col-lg-6 col-md-5 col-sm-5" pattern="\d*" id="weight" type="number" min="25" max="300" step="1" placeholder="84" data-ng-model="weight" required="required" >
                 <div class="input-group-append col-4 col-xl-3 col-lg-3 col-md-3 col-sm-3 px-0">
-                  <span class="input-group-text w-100">Ký-lô-gram</span>
+                  <span class="input-group-text w-100">KG</span>
                 </div>
               </div>
               <div class="input-group">
@@ -42,7 +43,7 @@ include template('header.vi');
                 </div>
                 <input class="form-control col-4 col-xl-6 col-lg-6 col-md-5 col-sm-5" pattern="\d*" id="height" type="number" min="100" max="300" step="1" placeholder="184" data-ng-model="height" required="required" >
                 <div class="input-group-append col-4 col-xl-3 col-lg-3 col-md-3 col-sm-3 px-0">
-                  <span class="input-group-text w-100">Cen-ti-mét</span>
+                  <span class="input-group-text w-100">CM</span>
                 </div>
               </div>
               <div class="input-group">
@@ -90,11 +91,13 @@ include template('header.vi');
         </div>
       </div>
 <?php
+include template('script.bmi');
 include template('adsense');
 ?>
     </main>
 <?php
 include template('footer.vi');
+include template('service_worker');
 ?>
   </body>
 </html>

@@ -114,24 +114,12 @@ function copyToClipboard(element) {
     $temp.val($(element).text()).select();
     document.execCommand('copy');
     $temp.remove();
-    switch ($('body').attr('lang')) {
+    switch ($('html').attr('lang')) {
         case 'vi':
-            $.notify('Đã sao chép');
+            $.notify('Đã sao chép', 'success');
             break;
         case 'en':
-            $.notify('Copied');
-            break;
-        case 'ru':
-            $.notify('Скопированный');
-            break;
-        case 'es':
-            $.notify('Copiado');
-            break;
-        case 'zh':
-            $.notify('复制');
-            break;
-        case 'ja':
-            $.notify('コピーされた');
+            $.notify('Copied', 'success');
             break;
     }
 }
@@ -782,6 +770,35 @@ function loadResults(dob, diff, isSecondary, dtChange, partnerDob, langCode) {
         $.when(chartAjaxCall, infoAjaxCall).done(function(chartAjaxResponse, infoAjaxResponse) {
             $('#ajax-chart').html(chartAjaxResponse[0]);
             $('#ajax-info').html(infoAjaxResponse[0]);
+            var date = new Date(dtChange);
+            var dateString = moment(date);
+            dateString.locale(langCode);
+            $.notify(dateString.format('LL'), 'info');
+        });
+    }
+}
+function loadAnalysisResults(dob, diff, isSecondary, dtChange, partnerDob, langCode) {
+    if ($('#ajax-chart').length) {
+        $.ajax({
+            url: '/templates/chart.tpl.php',
+            type: 'GET',
+            cache: false,
+            data: {
+                dob: dob,
+                diff: diff,
+                is_secondary: isSecondary,
+                dt_change: dtChange,
+                partner_dob: partnerDob,
+                lang_code: langCode,
+                is_analysis: '1'
+            },
+            dataType: 'html'
+        }).done(function(data){
+            $('#ajax-chart').html(data);
+            var date = new Date(dtChange);
+            var dateString = moment(date);
+            dateString.locale(langCode);
+            $.notify(dateString.format('LL'), 'info');
         });
     }
 }
@@ -837,9 +854,9 @@ function loadEmbedChartResults(dob, diff, isSecondary, dtChange, partnerDob, lan
 }
 
 function loadProverb(langCode) {
-    if ($('#proverb').length && $('#proverb').attr('data-ajax-triggered') == 'no') {
+    if ($('#proverb').length) {
         $.ajax({
-            url: '/triggers/json/proverb.php',
+            url: '/templates/proverb_json.tpl.php',
             type: 'GET',
             cache: !1,
             data: {
@@ -847,29 +864,16 @@ function loadProverb(langCode) {
             },
             dataType: 'json'
         }).done(function(data) {
+            $('#proverb').find('#proverb_text').children('span.content').text(data.content);
+            $('#proverb').find('#proverb_author').text(data.author);
             switch (langCode) {
                 case 'vi':
-                    $.notify('Thành ngữ mới');
+                    $.notify('Thành ngữ mới', 'success');
                     break;
                 case 'en':
-                    $.notify('New proverb');
+                    $.notify('New proverb', 'success');
                     break;
-                case 'ru':
-                    $.notify('Новый пословица');
-                    break;
-                case 'es':
-                    $.notify('Nueva proverbio');
-                    break;
-                case 'zh':
-                    $.notify('新谚语');
-                    break;
-                case 'ja':
-                    $.notify('新しいことわざ');
-                    break
             }
-            $('#proverb').find('#proverb_text').text(data.content);
-            $('#proverb').find('#proverb_author').html('<a href="/wiki/' + data.author.replace(' ', '_') + '" target="_blank">' + data.author + '</a>');
-            $('#proverb').attr('data-ajax-triggered', 'yes')
         })
     }
 }
@@ -1134,7 +1138,7 @@ function renderChart(selector, titleText, percentageText, dateText, datesArray, 
         chart: {
             type: 'spline',
             style: {
-                fontFamily: 'Comfortaa, cursive'
+                fontFamily: 'Muli, sans-serif'
             }
         },
         colors: ['#a3abbe', '#ef7955', '#4fc281', '#4b98dc', '#81d8d1', '#5c95cc', '#434348', '#90ed7d', '#f7a35c', '#7075d9'],
@@ -1203,7 +1207,7 @@ function renderChart(selector, titleText, percentageText, dateText, datesArray, 
             tickColor: 'transparent',
             tickPixelInterval: 50,
             labels: {
-                rotation: -60,
+                rotation: -45,
                 x: 0
             },
             type: 'datetime',
@@ -1228,7 +1232,7 @@ function renderChart(selector, titleText, percentageText, dateText, datesArray, 
             enabled: !0,
             shared: !0,
             followPointer: !1,
-            backgroundColor: 'rgba(250,250,250,0.666)',
+            backgroundColor: 'rgba(250,250,250,0.84)',
             borderColor: '#c0c0c0',
             borderRadius: 4,
             snap: 4,
@@ -1310,6 +1314,220 @@ function renderChart(selector, titleText, percentageText, dateText, datesArray, 
         var labelText = this.textContent || this.innerText;
         var x = datesArray.indexOf(labelText);
         loadResults(dob, diff + x - 14, isSecondary, convertDate(+new Date(dateDiff) + (x - 14) * 864e5), dob, $('html').attr('lang'));
+    });
+    if (type == 'main') {
+        chart = $(selector).highcharts();
+        $('i.rhythm_toggle').each(function() {
+            id = $(this).attr('data-rhythm-id');
+            series = chart.series[id];
+            if (series.visible) {
+                series.show();
+                $.cookie('BIO:rhythm-' + type + '-id-' + id, 'show');
+                $(this).removeClass('icon-unchecked').addClass('icon-check')
+            } else if (!series.visible) {
+                series.hide();
+                $.cookie('BIO:rhythm-' + type + '-id-' + id, 'hide');
+                $(this).removeClass('icon-check').addClass('icon-unchecked')
+            }
+        });
+        $('i.rhythm_toggle').on('click', function() {
+            id = $(this).attr('data-rhythm-id');
+            series = chart.series[id];
+            if (!series.visible) {
+                series.show();
+                $.cookie('BIO:rhythm-' + type + '-id-' + id, 'show');
+                $(this).removeClass('icon-unchecked').addClass('icon-check')
+            } else if (series.visible) {
+                series.hide();
+                $.cookie('BIO:rhythm-' + type + '-id-' + id, 'hide');
+                $(this).removeClass('icon-check').addClass('icon-unchecked')
+            }
+        })
+    }
+}
+function renderChartAnalysis(selector, titleText, percentageText, dateText, datesArray, todayIndex, dob, diff, isSecondary, dateDiff, seriesData, type) {
+    var plotLinesArray = generatePlotLines(todayIndex);
+    var chart = $(selector);
+    chart.highcharts({
+        chart: {
+            type: 'spline',
+            style: {
+                fontFamily: 'Muli, sans-serif'
+            }
+        },
+        colors: ['#a3abbe', '#ef7955', '#4fc281', '#4b98dc', '#81d8d1', '#5c95cc', '#434348', '#90ed7d', '#f7a35c', '#7075d9'],
+        credits: {
+            href: 'https://biorhythm.xyz/',
+            text: 'Biorhythm . XYZ',
+            position: {
+                align: 'right',
+                x: -10,
+                verticalAlign: 'bottom',
+                y: -10
+            }
+        },
+        exporting: {
+            url: 'https://export.highcharts.com/'
+        },
+        title: {
+            text: titleText
+        },
+        navigation: {
+            buttonOptions: {
+                theme: {
+                    stroke: '#e2e2e2',
+                    r: 0,
+                    states: {
+                        hover: {
+                            stroke: '#c2c2c2',
+                            fill: '#d2d2d2'
+                        },
+                        select: {
+                            stroke: '#a2a2a2',
+                            fill: '#b2b2b2'
+                        }
+                    }
+                }
+            },
+            menuItemStyle: {
+                fontWeight: 'bold',
+                fontSize: '12px'
+            },
+            menuItemHoverStyle: {
+                background: '#848484',
+                color: '#e5e5e5',
+                fontWeight: 'bold',
+                fontSize: '12px'
+            }
+        },
+        yAxis: {
+            title: {
+                text: percentageText + ' (%)'
+            },
+            min: 0,
+            max: 100,
+            maxPadding: 0,
+            tickInterval: 10,
+            plotLines: [{
+                color: '#c0c0c0',
+                width: 4,
+                value: 50
+            }]
+        },
+        xAxis: {
+            categories: datesArray,
+            tickmarkPlacement: 'on',
+            tickPosition: 'inside',
+            tickColor: 'transparent',
+            tickPixelInterval: 50,
+            labels: {
+                rotation: -45,
+                x: 0
+            },
+            type: 'datetime',
+            plotBands: [{
+                color: '#ffffe0',
+                from: 0,
+                to: 14
+            }, {
+                color: '#e0ffff',
+                from: 14,
+                to: 28
+            }],
+            plotLines: plotLinesArray,
+            crosshair: {
+                color: '#e0c0c0',
+                dashStyle: 'solid',
+                width: 4,
+                snap: !0
+            }
+        },
+        tooltip: {
+            enabled: !0,
+            shared: !0,
+            followPointer: !1,
+            backgroundColor: 'rgba(250,250,250,0.84)',
+            borderColor: '#c0c0c0',
+            borderRadius: 4,
+            snap: 4,
+            useHTML: !0,
+            headerFormat: '<strong><u>' + dateText + ': {point.key}</u></strong><table id="rhythms_table">',
+            pointFormat: '<tr class="rhythm_value" id="rhythm_id_{series.index}"><td class="rhythm_label"><span style="color: {series.color}">{series.name}:</span></td><td class="value"><span style="color: {series.color}"><strong>{point.y} %<strong></span></td></tr>',
+            footerFormat: '</table>'
+        },
+        legend: {
+            enabled: !0,
+            align: 'center',
+            itemWidth: null,
+            labelFormat: '<span style="color:{color}">{name}: </span><strong>{point.y} %</strong>'
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: !1
+                },
+                enableMouseTracking: !0
+            },
+            series: {
+                animation: !1,
+                stickyTracking: !1,
+                cursor: 'pointer',
+                lineWidth: 3,
+                events: {
+                    legendItemClick: function(e) {
+                        e.preventDefault();
+                        if (!this.visible) {
+                            this.show();
+                            $.cookie('BIO:rhythm-' + type + '-id-' + this.index, 'show');
+                            $('i.rhythm_toggle[data-rhythm-id="' + this.index + '"]').removeClass('icon-unchecked').addClass('icon-check')
+                        } else if (this.visible) {
+                            this.hide();
+                            $.cookie('BIO:rhythm-' + type + '-id-' + this.index, 'hide');
+                            $('i.rhythm_toggle[data-rhythm-id="' + this.index + '"]').removeClass('icon-check').addClass('icon-unchecked')
+                        }
+                    }
+                },
+                marker: {
+                    radius: 2,
+                    fillColor: null,
+                    lineWidth: 2,
+                    lineColor: '#fff',
+                    symbol: 'circle',
+                    enabled: !1,
+                    states: {
+                        hover: {
+                            enabled: !0
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        halo: null
+                    }
+                },
+                point: {
+                    events: {
+                        click: function() {
+                            loadAnalysisResults(dob, diff + this.x - 14, isSecondary, convertDate(+new Date(dateDiff) + (this.x - 14) * 864e5), dob, $('html').attr('lang'));
+                        },
+                        mouseOver: function() {
+                            $('#rhythm_id_' + this.series.index).addClass('rhythm_hover');
+                            $('#rhythm_id_' + this.series.index).find('td.value').find('span').css('color', this.series.color)
+                        },
+                        mouseOut: function() {
+                            $('#rhythm_id_' + this.series.index).removeClass('rhythm_hover');
+                            $('#rhythm_id_' + this.series.index).find('td.value').find('span').css('color', 'black')
+                        }
+                    }
+                }
+            }
+        },
+        series: seriesData
+    });
+    $('.highcharts-xaxis-labels').find('text').on('click', function() {
+        var labelText = this.textContent || this.innerText;
+        var x = datesArray.indexOf(labelText);
+        loadAnalysisResults(dob, diff + x - 14, isSecondary, convertDate(+new Date(dateDiff) + (x - 14) * 864e5), dob, $('html').attr('lang'));
     });
     if (type == 'main') {
         chart = $(selector).highcharts();

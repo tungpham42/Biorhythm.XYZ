@@ -1,6 +1,11 @@
 <?php
 error_reporting(-1);
 ini_set('display_errors', 'On');
+header("Expires: Mon, 29 Jan 1990 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 $basepath = realpath($_SERVER['DOCUMENT_ROOT']);
 $template_path = $basepath.'/templates/';
 require $basepath.'/inc/template.inc.php';
@@ -23,7 +28,7 @@ include template('header');
     <main class="main">
       <div class="container-fluid hero px-0">
         <div class="container">
-          <div class="row mx-auto p-5">
+          <div class="row mx-auto py-5 px-3">
             <div class="hero-box mx-auto w-75 shadow-lg rounded">
               <ul class="nav nav-tabs rounded-top">
                 <li class="active rounded-top"><a class="rounded-top" data-toggle="tab" href="#calculate">Calculate Biorhythm</a></li>
@@ -36,7 +41,7 @@ include template('header');
                     <label class="sr-only" for="dob">Date of Birth</label>
                     <input data-toggle="tooltip" data-placement="top" data-original-title="Format: YYYY-MM-DD" data-disable-interaction="true" data-step="1" data-intro="Pick a Date with the order year, month, and day. Click `Run` to start calculating your biorhythms." type="text" pattern="\d{4}-\d{2}-\d{2}" class="form-control mb-2 mr-sm-2 col-12 col-xl-5 col-lg-5 col-md-4 col-sm-12" name="dob" id="dob" placeholder="Date of Birth" required="required" value="<?php echo $dob; ?>" data-date-start-view="decade">
                     <a data-toggle="tooltip" data-placement="top" data-original-title="Click to start" class="btn btn-warning mb-2 mr-xl-2 mr-lg-2 mr-md-2 col-12 col-xl-2 col-lg-2 col-md-2 col-sm-12" onclick="submitDob()">Run</a>
-                    <a data-toggle="tooltip" data-placement="top" data-original-title="Click to take a tour" class="btn btn-info mb-2 col-12 col-xl-4 col-lg-4 col-md-5 col-sm-12" id="how-to-use">How to use?</a>
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="Click to take a tour" class="btn btn-info mb-2 col-12 col-xl-4 col-lg-4 col-md-5 col-sm-12" id="how-to-use">How to use</a>
                     <button type="submit" class="d-none"></button>
                   </form>
                   <p class="desc my-0">This is a <b>Biorhythm Calculator</b>. Use this tool to get to know more about yourself. To use, pick a Date using our Date Picker, the date format is <b>YYYY-MM-DD</b> (year-month-day). Then click "Run" to know your <b>physical, emotional, and intellectual</b> values. If you only care about <b>Sleep Rhythm</b>, you can ignore this form.</p>
@@ -44,7 +49,7 @@ include template('header');
                 <section id="sleep_time" class="tab-pane fade">
                   <p>If you plan to get up at</p>
                   <div class="row p-3">
-                    <select id="sleep_time_hour" class="custom-select col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <select id="sleep_time_hour" class="custom-select col-12 col-xl-5 col-lg-5 col-md-5 col-sm-12 mb-2 mr-xl-2 mr-lg-2 mr-md-2">
                       <option>Select hour</option>
                       <option>0</option>
                       <option>1</option>
@@ -72,7 +77,7 @@ include template('header');
                       <option>23</option>
                       <option>24</option>
                     </select>
-                    <select id="sleep_time_minute" class="custom-select col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <select id="sleep_time_minute" class="custom-select col-12 col-xl-5 col-lg-5 col-md-5 col-sm-12 mb-2 ml-xl-2 ml-lg-2 ml-md-2">
                       <option>Select minute</option>
                       <option>00</option>
                       <option>05</option>
@@ -97,7 +102,7 @@ include template('header');
                     </span>
                   </div>
                   <p>Or if you want to sleep right now</p>
-                  <a class="btn btn-warning mb-2" id="sleep_now">Sleep now!</a>
+                  <a class="btn btn-warning mb-2" id="sleep_now"><i class="fas fa-bed"></i> Sleep now</a>
                   <div>
                     <p>You should try to get up at one of the following times:</p>
                     <span id="wake_up_time_results">
@@ -109,7 +114,10 @@ include template('header');
                 </section>
               </div>
             </div>
-            <script type="text/javascript">
+<?php
+include template('script.home');
+?>
+            <script>
             function isDate(txtDate) {
               var currVal = txtDate;
               if (currVal === '') {
@@ -225,7 +233,6 @@ include template('header');
               defaultViewDate: '<?php echo ($dob != '') ? date('Y-m-d',strtotime($dob)): '1961-09-26'; ?>',
               endDate: '<?php echo date('Y-m-d'); ?>',
               autoclose: true,
-              clearBtn: true,
               immediateUpdates: true,
               todayHighlight: true,
               todayBtn: true,
@@ -276,7 +283,7 @@ render_proverb($lang_code);
       <div id="result"></div>
       <div class="container-fluid chart px-0">
         <div class="container mx-auto px-0">
-          <div class="row w-100 mx-auto p-5 position-relative" id="ajax-chart">
+          <div class="row w-100 mx-auto py-5 px-0 position-relative" id="ajax-chart">
 <?php
 echo $chart->output_main_chart();
 ?>
@@ -298,7 +305,7 @@ echo $chart->output_info();
           <div class="row w-100 mx-auto py-5 px-0">
             <div class="px-5 w-100">
               <h2 class="mb-4">Compatibility with your friends</h2>
-              <section class="rhythms" data-disable-interaction="true" data-step="11" data-intro="How compatible are you and your friends? Choose the Date of birth for you two.">
+              <section class="rhythms" data-disable-interaction="true" data-step="12" data-intro="How compatible are you and your friends? Choose the Date of birth for you two.">
                 <article class="rhythm physical" title="Physical: 100%">
                   <h3>Physical</h3>
                   <div class="percent">100%</div>
@@ -330,23 +337,23 @@ echo $chart->output_info();
               </section>
             </div>
             <form class="dates mx-auto" id="date-input">
-              <div class="date" data-disable-interaction="true" data-step="12" data-intro="Choose your birthday">
-                <select name="yyyy" data-original-title="Year" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Year</option></select>
+              <div class="date shadow-lg rounded" data-disable-interaction="true" data-step="13" data-intro="Choose your birthday">
+                <select name="yyyy" data-original-title="Year" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Year</option></select>
                 -
-                <select name="mm" data-original-title="Month" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Month</option></select>
+                <select name="mm" data-original-title="Month" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Month</option></select>
                 -
-                <select name="dd" data-original-title="Day" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Day</option></select>
+                <select name="dd" data-original-title="Day" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Day</option></select>
               </div>
               <span class="separator">+</span>
-              <div class="date" data-disable-interaction="true" data-step="13" data-intro="Choose your friend's birthday">
-                <select name="yyyy2" data-original-title="Year" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Year</option></select>
+              <div class="date shadow-lg rounded" data-disable-interaction="true" data-step="14" data-intro="Choose your friend's birthday">
+                <select name="yyyy2" data-original-title="Year" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Year</option></select>
                 -
-                <select name="mm2" data-original-title="Month" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Month</option></select>
+                <select name="mm2" data-original-title="Month" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Month</option></select>
                 -
-                <select name="dd2" data-original-title="Day" class="custom-select" data-toggle="tooltip" data-placement="bottom"><option value="">Day</option></select>
+                <select name="dd2" data-original-title="Day" class="custom-select" data-toggle="tooltip" data-placement="top"><option value="">Day</option></select>
               </div>
             </form>
-            <script type="text/javascript">
+            <script>
             function daysInMonth(month, year) {
               return new Date(year, month, 0).getDate();
             }
@@ -365,10 +372,20 @@ echo $chart->output_info();
             }
             </script>
             <script src="<?php echo $cdn_url; ?>/static/js/compat.js?v=7"></script>
-            <script type="text/javascript">
+            <script>
             updateDays('select[name="yyyy"]','select[name="mm"]','select[name="dd"]');
             updateDays('select[name="yyyy2"]','select[name="mm2"]','select[name="dd2"]');
             </script>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid comments px-0 border-top">
+        <div class="container mx-auto px-0">
+          <div class="row w-100 mx-auto p-5">
+            <h2 class="mb-4 w-100" data-disable-interaction="true" data-step="16" data-intro="This is the end of our tour. Leave a comment">Comments</h2>
+<?php
+include template('fb_comments');
+?>
           </div>
         </div>
       </div>
@@ -378,6 +395,7 @@ include template('adsense');
     </main>
 <?php
 include template('footer');
+include template('service_worker');
 ?>
     <script>
     manipulateHome();

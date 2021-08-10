@@ -4,9 +4,11 @@ ini_set('display_errors', 'On');
 ini_set('max_execution_time', 0);
 set_time_limit(0);
 require realpath($_SERVER['DOCUMENT_ROOT']).'/inc/prep.inc.php';
+init_timezone();
+$default_dt = new DateTime('now', new DateTimezone(date_default_timezone_get()));
 $p = isset($_GET['p']) ? prevent_xss($_GET['p']): 'home';
 $q = isset($_GET['q']) ? prevent_xss($_GET['q']): "";
-$dob = isset($_GET['dob']) ? prevent_xss($_GET['dob']): (isset($_COOKIE['BIO:remembered_dob']) ? $_COOKIE['BIO:remembered_dob']: date('Y-m-d'));
+$dob = isset($_GET['dob']) ? prevent_xss($_GET['dob']): (isset($_COOKIE['BIO:remembered_dob']) ? $_COOKIE['BIO:remembered_dob']: $default_dt->format('Y-m-d'));
 $embed = isset($_GET['embed']) ? prevent_xss($_GET['embed']): 0;
 //$lang_code = init_lang_code();
 $lang_code = 'en';
@@ -16,6 +18,8 @@ $og_desc = "This is a Biorhythm Calculator. Use this tool to get to know more ab
 $article_tag = "biorhythm";
 $bmi_title = "This is a Body Mass Index Calculator";
 $bmi_desc = "This is a Body Mass Index Calculator. Use this tool to know your Ideal Weight and Ideal Height.";
+$game_title = "This is a Xiang Qi board";
+$game_desc = "This is a Xiang Qi board, let's play!";
 $time_zone = 7;
 $show_ad = false;
 $show_donate = false;
@@ -36,10 +40,17 @@ $cdn_url = "";
 //$cdn_url = 'https://biorhythm.cdn.vccloud.vn';
 $number = calculate_life_path($dob);
 if (isset($_GET['dob']) && isset($_GET['diff']) && isset($_GET['is_secondary']) && isset($_GET['dt_change']) && isset($_GET['partner_dob']) && isset($_GET['lang_code'])) {
-	$chart = new Chart($_GET['dob'],$_GET['diff'],$_GET['is_secondary'],$_GET['dt_change'],$_GET['partner_dob'],$_GET['lang_code']);
+	if (isset($_GET['is_analysis'])) {
+		$chart = new ChartAnalysis((string)$_GET['dob'],(int)$_GET['diff'],(int)$_GET['is_secondary'],(string)$_GET['dt_change'],(string)$_GET['partner_dob'],(string)$_GET['lang_code']);
+	} else {
+		$chart = new Chart((string)$_GET['dob'],(int)$_GET['diff'],(int)$_GET['is_secondary'],(string)$_GET['dt_change'],(string)$_GET['partner_dob'],(string)$_GET['lang_code']);
+	}
 } else {
-	$date = (isset($_GET['date']) && $_GET['date'] != "") ? $_GET['date']: date('Y-m-d');
-	$chart = new Chart($dob,0,0,$date,$dob,$lang_code);
+	if (isset($_GET['is_analysis'])) {
+		$chart = new ChartAnalysis($dob,0,0,$default_dt->format('Y-m-d'),$dob,$lang_code);
+	} else {
+		$chart = new Chart($dob,0,0,$default_dt->format('Y-m-d'),$dob,$lang_code);
+	}
 }
 if (isset($_GET['ad'])) {
 	setcookie('BIO:show_ad',$_GET['ad']);

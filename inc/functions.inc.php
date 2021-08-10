@@ -1023,13 +1023,13 @@ function generate_proverb(string $lang): array {
 }
 function render_proverb(string $lang): void {
 	$proverb = generate_proverb($lang);
-	echo '<blockquote id="proverb_content"><div id="proverb_text"><span class="content" data-toggle="tooltip" data-placement="bottom" title="Click to copy" data-disable-interaction="true" data-step="14" data-intro="Here is a random quote for you. Read and relax.">'.$proverb['content'].'</span></div></blockquote ><span class="arrow_down"></span><p id="proverb_author" class="float-right">'.$proverb['author'].'</p>';
+	echo '<blockquote id="proverb_content"><div id="proverb_text"><span class="content" data-toggle="tooltip" data-placement="bottom" title="Click to copy" data-disable-interaction="true" data-step="15" data-intro="Here is a random quote for you. Read and relax.">'.$proverb['content'].'</span></div></blockquote ><span class="arrow_down"></span><p id="proverb_author" class="float-right">'.$proverb['author'].'</p><div id="proverb_refresh" data-toggle="tooltip" data-placement="right" title="Another proverb"><i class="fad fa-sync-alt"></i></div>';
 }
 function render_proverb_json(string $lang): void {
 	$proverb = generate_proverb($lang);
 	echo json_encode($proverb);
 }
-function list_proverbs(int $page=1,string $lang): string { //Return users list, for admin use
+function list_proverbs(int $page=1,string $lang='en'): string { //Return users list, for admin use
 	$output = "";
 	$count = 10;
 	$proverbs_csv = new parseCSV();

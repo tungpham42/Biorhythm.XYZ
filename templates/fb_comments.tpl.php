@@ -13,7 +13,7 @@ $(document).ready(function() {
       appId: '1244495622232184',
       cookie : true,
       xfbml : true,
-      version : 'v3.2'
+      version : 'v6.0'
     });
   });
 });

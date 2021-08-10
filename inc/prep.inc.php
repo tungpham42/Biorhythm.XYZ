@@ -1,4 +1,13 @@
 <?php
+header("Expires: Mon, 29 Jan 1990 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+require realpath($_SERVER['DOCUMENT_ROOT']).'/inc/ip/geoipcity.inc.php';
+require realpath($_SERVER['DOCUMENT_ROOT']).'/inc/ip/timezone.php';
+$geoip = geoip_open(realpath($_SERVER['DOCUMENT_ROOT']).'/inc/ip/GeoIPCity.dat',GEOIP_STANDARD);
+$geoip_record = geoip_record_by_addr($geoip,$_SERVER['REMOTE_ADDR']);
 function libraries_autoload(string $class_name): void {
 	require realpath($_SERVER['DOCUMENT_ROOT']).'/inc/lib/'.$class_name.'.class.php';
 }
@@ -157,124 +166,124 @@ function is_paid_member(string $email): bool {
 }
 
 /* General Functions */
-function load_all_array(string $table_name): array { //Put all table records into an array
-	global $pdo;
-	$array = array();
-	$result = $pdo->prepare('SELECT * FROM `'.$table_name.'`');
-	$result->execute();
-	if ($result) {
-		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-			$array[] = $row;
-		}
-	}
-	return $array;
-}
-function load_array_with_operator(string $table_name,string $identifier,string $value,string $operator): array { //Put specific table records according to condition into an array
-	global $pdo;
-	$array = array();
-	$result = $pdo->prepare('SELECT * FROM `'.$table_name.'` WHERE `'.$identifier.'`'.$operator.':value');
-	$result->execute(array(':value' => $value));
-	if ($result) {
-		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-			$array[] = $row;
-		}
-	}
-	return $array;
-}
-function load_array_with_two_identifiers(string $table_name,string $identifier1,string $value1,string $identifier2,string $value2): array { //Load array from database with 2 identifiers
-	global $pdo;
-	$array = array();	
-	$result = $pdo->prepare('SELECT * FROM `'.$table_name.'` WHERE `'.$identifier1.'`=:value1 AND `'.$identifier2.'`=:value2');
-	$result->execute(array(':value1' => $value1, ':value2' => $value2));
-	if ($result) {
-		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-			$array[] = $row;
-		}
-	}
-	return $array;
-}
-function load_array_with_two_values(string $table_name,string $identifier,string $value1,string $value2): array { //Load array from database with 1 identifier and 2 values
-	global $pdo;
-	$array = array();	
-	$result = $pdo->prepare('SELECT * FROM `'.$table_name.'` WHERE `'.$identifier.'`=:value1 OR `'.$identifier.'`=:value2');
-	$result->execute(array(':value1' => $value1, ':value2' => $value2));
-	if ($result) {
-		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-			$array[] = $row;
-		}
-	}
-	return $array;
-}
-function load_array(string $table_name,string $identifier,string $value): array { //Load array from database with 1 identifier and 1 value
-	$array = load_array_with_operator($table_name,$identifier,$value,'=');
-	return $array;
-}
-function search_array(string $table_name,string $identifier,string $value): array {
-	global $pdo;
-	$array = array();
-	$result = $pdo->prepare('SELECT * FROM `'.$table_name.'` WHERE `'.$identifier.'` LIKE :value');
-	$result->execute(array(':value' => `%$value%`));
-	if ($result) {
-		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-			$array[] = $row;
-		}
-	}
-	return $array;
-}
-function insert_record(array $array = array(),string $table_name): void { //Insert table record
-	global $pdo;
-	$keys = array_keys($array);
-	$values = array_values($array);
-	$execute_array = array();
-	$count = count($array);
-	$query = ``;
-	$query .= 'INSERT INTO `'.$table_name.'`(';
-	for ($k = 0; $k < $count; ++$k) {
-		$query .= $keys[$k].(($k < ($count - 1)) ? ',': ``);
-	}
-	$query .= ') VALUES(';
-	for ($i = 0; $i < $count; ++$i) {
-		$query .= '?'.(($i < ($count - 1)) ? ',': ``);
-	}
-	$query .= ')';
-	for ($e = 0; $e < $count; ++$e) {
-		$execute_array[$e] = $values[$e];
-	}
-	$result = $pdo->prepare($query);
-	$result->execute($execute_array);
-}
-function update_record_with_operator(array $array = array(),string $identifier,string $value,string $table_name,string $operator): void { //Update table record
-	global $pdo;
-	$keys = array_keys($array);
-	$values = array_values($array);
-	$execute_array = array();
-	$count = count($array);
-	$query = ``;
-	$query .= 'UPDATE `'.$table_name.'` SET ';
-	for ($i = 0; $i < $count; ++$i) {
-		$query .= $keys[$i].'=?'.(($i < ($count - 1)) ? ',': ``);
-	}
-	$query .= ' WHERE `'.$identifier.'`'.$operator.'?';
-	for ($e = 0; $e < $count; ++$e) {
-		$execute_array[$e] = $values[$e];
-	}
-	$execute_array[$count] = $value;
-	$result = $pdo->prepare($query);
-	$result->execute($execute_array);
-}
-function update_record(array $array = array(),string $identifier,string $value,string $table_name): void { //Update table record
-	update_record_with_operator($array, $identifier, $value, $table_name, '=');
-}
-function delete_record(string $identifier,string $value,string $table_name): void { //Delete table records with 1 identifier
-	global $pdo;
-	$result = $pdo->prepare('DELETE FROM `'.$table_name.'` WHERE `'.$identifier.'`=:value');
-	$result->execute(array(':value' => $value));
-}
-function delete_record_with_two_identifier(string $identifier1,string $value1,string $identifier2,string $value2,string $table_name): void { //Delete table records with 2 identifiers
-	global $pdo;
-	$result = $pdo->prepare('DELETE FROM `'.$table_name.'` WHERE `'.$identifier1.'`=:value1 AND `'.$identifier2.'`=:value2');
-	$result->execute(array(':value1' => $value1, ':value2' => $value2));
-}
+// function load_all_array(string $table_name): array { //Put all table records into an array
+// 	global $pdo;
+// 	$array = array();
+// 	$result = $pdo->prepare('SELECT * FROM `'.$table_name.'`');
+// 	$result->execute();
+// 	if ($result) {
+// 		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+// 			$array[] = $row;
+// 		}
+// 	}
+// 	return $array;
+// }
+// function load_array_with_operator(string $table_name,string $identifier,string $value,string $operator): array { //Put specific table records according to condition into an array
+// 	global $pdo;
+// 	$array = array();
+// 	$result = $pdo->prepare('SELECT * FROM `'.$table_name.'` WHERE `'.$identifier.'`'.$operator.':value');
+// 	$result->execute(array(':value' => $value));
+// 	if ($result) {
+// 		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+// 			$array[] = $row;
+// 		}
+// 	}
+// 	return $array;
+// }
+// function load_array_with_two_identifiers(string $table_name,string $identifier1,string $value1,string $identifier2,string $value2): array { //Load array from database with 2 identifiers
+// 	global $pdo;
+// 	$array = array();	
+// 	$result = $pdo->prepare('SELECT * FROM `'.$table_name.'` WHERE `'.$identifier1.'`=:value1 AND `'.$identifier2.'`=:value2');
+// 	$result->execute(array(':value1' => $value1, ':value2' => $value2));
+// 	if ($result) {
+// 		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+// 			$array[] = $row;
+// 		}
+// 	}
+// 	return $array;
+// }
+// function load_array_with_two_values(string $table_name,string $identifier,string $value1,string $value2): array { //Load array from database with 1 identifier and 2 values
+// 	global $pdo;
+// 	$array = array();	
+// 	$result = $pdo->prepare('SELECT * FROM `'.$table_name.'` WHERE `'.$identifier.'`=:value1 OR `'.$identifier.'`=:value2');
+// 	$result->execute(array(':value1' => $value1, ':value2' => $value2));
+// 	if ($result) {
+// 		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+// 			$array[] = $row;
+// 		}
+// 	}
+// 	return $array;
+// }
+// function load_array(string $table_name,string $identifier,string $value): array { //Load array from database with 1 identifier and 1 value
+// 	$array = load_array_with_operator($table_name,$identifier,$value,'=');
+// 	return $array;
+// }
+// function search_array(string $table_name,string $identifier,string $value): array {
+// 	global $pdo;
+// 	$array = array();
+// 	$result = $pdo->prepare('SELECT * FROM `'.$table_name.'` WHERE `'.$identifier.'` LIKE :value');
+// 	$result->execute(array(':value' => `%$value%`));
+// 	if ($result) {
+// 		while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+// 			$array[] = $row;
+// 		}
+// 	}
+// 	return $array;
+// }
+// function insert_record(array $array = array(),string $table_name): void { //Insert table record
+// 	global $pdo;
+// 	$keys = array_keys($array);
+// 	$values = array_values($array);
+// 	$execute_array = array();
+// 	$count = count($array);
+// 	$query = ``;
+// 	$query .= 'INSERT INTO `'.$table_name.'`(';
+// 	for ($k = 0; $k < $count; ++$k) {
+// 		$query .= $keys[$k].(($k < ($count - 1)) ? ',': ``);
+// 	}
+// 	$query .= ') VALUES(';
+// 	for ($i = 0; $i < $count; ++$i) {
+// 		$query .= '?'.(($i < ($count - 1)) ? ',': ``);
+// 	}
+// 	$query .= ')';
+// 	for ($e = 0; $e < $count; ++$e) {
+// 		$execute_array[$e] = $values[$e];
+// 	}
+// 	$result = $pdo->prepare($query);
+// 	$result->execute($execute_array);
+// }
+// function update_record_with_operator(array $array = array(),string $identifier,string $value,string $table_name,string $operator): void { //Update table record
+// 	global $pdo;
+// 	$keys = array_keys($array);
+// 	$values = array_values($array);
+// 	$execute_array = array();
+// 	$count = count($array);
+// 	$query = ``;
+// 	$query .= 'UPDATE `'.$table_name.'` SET ';
+// 	for ($i = 0; $i < $count; ++$i) {
+// 		$query .= $keys[$i].'=?'.(($i < ($count - 1)) ? ',': ``);
+// 	}
+// 	$query .= ' WHERE `'.$identifier.'`'.$operator.'?';
+// 	for ($e = 0; $e < $count; ++$e) {
+// 		$execute_array[$e] = $values[$e];
+// 	}
+// 	$execute_array[$count] = $value;
+// 	$result = $pdo->prepare($query);
+// 	$result->execute($execute_array);
+// }
+// function update_record(array $array = array(),string $identifier,string $value,string $table_name): void { //Update table record
+// 	update_record_with_operator($array, $identifier, $value, $table_name, '=');
+// }
+// function delete_record(string $identifier,string $value,string $table_name): void { //Delete table records with 1 identifier
+// 	global $pdo;
+// 	$result = $pdo->prepare('DELETE FROM `'.$table_name.'` WHERE `'.$identifier.'`=:value');
+// 	$result->execute(array(':value' => $value));
+// }
+// function delete_record_with_two_identifier(string $identifier1,string $value1,string $identifier2,string $value2,string $table_name): void { //Delete table records with 2 identifiers
+// 	global $pdo;
+// 	$result = $pdo->prepare('DELETE FROM `'.$table_name.'` WHERE `'.$identifier1.'`=:value1 AND `'.$identifier2.'`=:value2');
+// 	$result->execute(array(':value1' => $value1, ':value2' => $value2));
+// }
 function table_row_class($id): string { //Identify the table row class based on counter
 	$output = "";
 	if ((($id+1) % 2) == 1) {
