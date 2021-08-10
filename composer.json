@@ -1,0 +1,11 @@
+{
+    "require": {
+        "melbahja/http2-pusher": "^1.0",
+        "simplepie/simplepie": "^1.5",
+        "mf2/mf2": "^0.4.6",
+        "masterminds/html5": "^2.7",
+        "barnabywalters/mf-cleaner": "^0.1.4",
+        "workerman/workerman": "^3.5",
+        "austinb/gameq": "~3.0"
+    }
+}
